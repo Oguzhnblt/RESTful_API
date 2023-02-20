@@ -18,8 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Abstract\" />
-    <Folder Include="Concrate\" />
+    <ProjectReference Include="..\RESTful_API.DAL\RESTful_API.DAL.csproj" />
   </ItemGroup>
 
 </Project>
