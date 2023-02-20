@@ -6,6 +6,7 @@ using RESTful_API.BL.Concrate;
 using RESTful_API.DAL.Context;
 using RESTful_API.DAL.Repository;
 using RESTful_API.DAL.Repository.Abstract;
+using RESTful_API.Service.Mapping;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
@@ -46,6 +47,7 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
 
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddTransient(typeof(IGenericService<>), typeof(GenericManager<>));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 
 
