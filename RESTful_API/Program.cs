@@ -76,6 +76,7 @@ app.Use(async (context, next) =>
 
 
 app.UseMiddleware<LoggingMiddleware>();
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 

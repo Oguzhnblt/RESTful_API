@@ -30,10 +30,12 @@ namespace RESTful_API.Controllers
             var product = await _productRepository.GetProductById(id);
             if (product == null)
             {
-                return NotFound();
+                throw new NotFoundException($"{typeof(Product).Name}({id}) not found");
             }
             return Ok(product);
         }
+
+
 
         [Authorize(Roles = "Admin,User")]
         [HttpPost]

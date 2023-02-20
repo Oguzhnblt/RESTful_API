@@ -11,7 +11,7 @@ public class LoggingMiddleware
 
     public async Task Invoke(HttpContext context)
     {
-        Console.WriteLine($"Request received: {context.Request.Method} {context.Request.Path}"); // Hangi action'a girildiği bilgisii
+        Console.WriteLine($"Request received:{context.Request.Body} {context.Request.Method} {context.Request.Path}"); // Hangi action'a girildiği bilgisii
 
         await _next(context);
 
