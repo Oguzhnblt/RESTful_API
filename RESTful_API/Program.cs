@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RESTful_API.DAL.Context;
 using RESTful_API.DAL.Repository;
+using RESTful_API.DAL.Repository.Abstract;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
@@ -41,7 +42,7 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
     };
 });
 
-builder.Services.AddTransient(typeof(IProductRepository), typeof(ProductRepository));
+builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 
 

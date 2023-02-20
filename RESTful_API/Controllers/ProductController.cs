@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using RESTful_API.DAL.Repository;
+using RESTful_API.DAL.Repository.Abstract;
 using RESTful_API.DTO.Entities;
 
 namespace RESTful_API.Controllers
@@ -10,24 +10,23 @@ namespace RESTful_API.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IGenericRepository<Product> _productRepository;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IGenericRepository<Product> productRepository)
         {
             _productRepository = productRepository;
         }
-
         [HttpGet]
         public async Task<IActionResult> GetProducts() // Bütün ürünleri listeleme 
         {
-            var products = await _productRepository.GetProducts();
+            var products = await _productRepository.GetAll();
             return Ok(products);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(int id) // ID'ye Göre Ürün Listeleme 
         {
-            var product = await _productRepository.GetProductById(id);
+            var product = await _productRepository.GetById(id);
             if (product == null)
             {
                 throw new NotFoundException($"{typeof(Product).Name}({id}) not found");
@@ -45,7 +44,7 @@ namespace RESTful_API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var newProduct = await _productRepository.AddProduct(product);
+            var newProduct = await _productRepository.Add(product);
             return CreatedAtAction(nameof(GetProductById), new { id = newProduct.Id }, newProduct);
         }
 
@@ -57,13 +56,13 @@ namespace RESTful_API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var existingProduct = await _productRepository.GetProductById(id);
+            var existingProduct = await _productRepository.GetById(id);
             if (existingProduct == null)
             {
                 return NotFound();
             }
             product.Id = id;
-            await _productRepository.UpdateProduct(product);
+            await _productRepository.Update(product);
             return NoContent();
         }
 
@@ -76,7 +75,7 @@ namespace RESTful_API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var existingProduct = await _productRepository.GetProductById(id);
+            var existingProduct = await _productRepository.GetById(id);
             if (existingProduct == null)
             {
                 return NotFound();
@@ -84,7 +83,7 @@ namespace RESTful_API.Controllers
 
             product.ApplyTo(existingProduct);
 
-            await _productRepository.UpdateProduct(existingProduct);
+            await _productRepository.Update(existingProduct);
             return NoContent();
         }
 
@@ -92,12 +91,12 @@ namespace RESTful_API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id) // ID'ye Göre Ürün Silme 
         {
-            var product = await _productRepository.GetProductById(id);
+            var product = await _productRepository.GetById(id);
             if (product == null)
             {
                 return NotFound();
             }
-            await _productRepository.DeleteProduct(product);
+            await _productRepository.Delete(product);
             return NoContent();
         }
 
@@ -107,7 +106,7 @@ namespace RESTful_API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetProducts([FromQuery] string name, [FromQuery] string sortOrder)
         {
-            var products = await _productRepository.GetProducts();
+            var products = await _productRepository.GetAll();
             if (!String.IsNullOrEmpty(name))
             {
                 products = products.Where(p => p.Name.ToUpper().Contains(name.ToUpper()));
