@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using RESTful_API.DAL.Repository;
 using RESTful_API.DTO.Entities;
@@ -34,6 +35,7 @@ namespace RESTful_API.Controllers
             return Ok(product);
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpPost]
         public async Task<IActionResult> AddProduct([FromBody] Product product) // Ürün Ekleme 
         {
@@ -45,6 +47,7 @@ namespace RESTful_API.Controllers
             return CreatedAtAction(nameof(GetProductById), new { id = newProduct.Id }, newProduct);
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product product) // ID'ye Göre Ürün Güncelleme 
         {
@@ -62,6 +65,8 @@ namespace RESTful_API.Controllers
             return NoContent();
         }
 
+
+        [Authorize(Roles = "Admin,User")]
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdatePartialProduct(int id, [FromBody] JsonPatchDocument<Product> product) // Ürünün belli bir özelliğini değiştirme
         {
@@ -81,6 +86,7 @@ namespace RESTful_API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id) // ID'ye Göre Ürün Silme 
         {

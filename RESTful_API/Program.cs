@@ -8,7 +8,10 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
+
+builder.Services.AddLogging();
 builder.Services.AddDbContext<RESTful_Api_Context>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -50,6 +53,29 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.Use(async (context, next) =>
+{
+    // Request baþlangýç zamanýný tutar.
+    var startTime = DateTime.UtcNow;
+
+    // Request URL'ini loglar.
+    Console.WriteLine($"Request URL: {context.Request.Path}");
+
+    // Request'in sonraki middleware'le devam etmesini saðlar.
+    await next();
+
+    // Response için geçen süreyi hesaplar.
+    var elapsedTime = DateTime.UtcNow - startTime;
+
+    // Response status code'unu loglar.
+    Console.WriteLine($"Response Status Code: {context.Response.StatusCode}");
+
+    // Response süresini loglar.
+    Console.WriteLine($"Elapsed Time: {elapsedTime.TotalMilliseconds} ms");
+});
+
+
+app.UseMiddleware<LoggingMiddleware>();
 
 app.UseHttpsRedirection();
 

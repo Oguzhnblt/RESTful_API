@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RESTful_API.DAL\RESTful_API.DAL.csproj" />
+    <ProjectReference Include="..\RESTful_API.Service\RESTful_API.Service.csproj" />
   </ItemGroup>
 
 </Project>
