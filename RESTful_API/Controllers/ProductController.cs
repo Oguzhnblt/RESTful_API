@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using RESTful_API.BL.Abstract;
 using RESTful_API.DAL.Repository.Abstract;
 using RESTful_API.DTO.Entities;
 
@@ -10,9 +11,9 @@ namespace RESTful_API.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IGenericRepository<Product> _productRepository;
+        private readonly IGenericService<Product> _productRepository;
 
-        public ProductController(IGenericRepository<Product> productRepository)
+        public ProductController(IGenericService<Product> productRepository)
         {
             _productRepository = productRepository;
         }

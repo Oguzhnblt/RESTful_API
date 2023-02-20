@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using RESTful_API.BL.Abstract;
+using RESTful_API.BL.Concrate;
 using RESTful_API.DAL.Context;
 using RESTful_API.DAL.Repository;
 using RESTful_API.DAL.Repository.Abstract;
@@ -43,6 +45,7 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
 });
 
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddTransient(typeof(IGenericService<>), typeof(GenericManager<>));
 
 
 

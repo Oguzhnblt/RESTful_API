@@ -1,8 +1,7 @@
 ﻿namespace RESTful_API.BL.Abstract
 {
-    public interface IGenericService<T>
+    public interface IGenericService<T> where T : class
     {
-
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
         Task<T> Add(T item);
