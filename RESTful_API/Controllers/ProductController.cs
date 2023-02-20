@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using RESTful_API.BL.Abstract;
-using RESTful_API.DAL.Repository.Abstract;
 using RESTful_API.DTO.Entities;
+using RESTful_API.DTO.Models;
 
 namespace RESTful_API.Controllers
 {
@@ -12,58 +13,69 @@ namespace RESTful_API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IGenericService<Product> _productRepository;
+        private readonly IMapper _mapper;
 
-        public ProductController(IGenericService<Product> productRepository)
+        public ProductController(IGenericService<Product> productRepository, IMapper mapper)
         {
             _productRepository = productRepository;
+            _mapper = mapper;
         }
         [HttpGet]
         public async Task<IActionResult> GetProducts() // Bütün ürünleri listeleme 
         {
-            var products = await _productRepository.GetAll();
-            return Ok(products);
+            var products = await _productRepository.GetAllAsync();
+
+            var productsDtos = _mapper.Map<IEnumerable<ProductDTO>>(products);
+
+            return Ok(productsDtos);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(int id) // ID'ye Göre Ürün Listeleme 
         {
-            var product = await _productRepository.GetById(id);
-            if (product == null)
+            var product = await _productRepository.GetByIdAsync(id);
+            var productDtos = _mapper.Map<ProductDTO>(product);
+
+            if (productDtos == null)
             {
                 throw new NotFoundException($"{typeof(Product).Name}({id}) not found");
             }
-            return Ok(product);
+            return Ok(productDtos);
         }
 
 
 
         [Authorize(Roles = "Admin,User")]
         [HttpPost]
-        public async Task<IActionResult> AddProduct([FromBody] Product product) // Ürün Ekleme 
+        public async Task<IActionResult> AddProduct([FromBody] ProductDTO dto) // Ürün Ekleme 
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var newProduct = await _productRepository.Add(product);
-            return CreatedAtAction(nameof(GetProductById), new { id = newProduct.Id }, newProduct);
+
+            var addProduct = await _productRepository.AddAsync(_mapper.Map<Product>(dto));
+
+            var productDto = _mapper.Map<ProductDTO>(addProduct);
+
+            return Created("", new ProductDTO { Name = dto.Name, Price = dto.Price });
         }
 
         [Authorize(Roles = "Admin,User")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product product) // ID'ye Göre Ürün Güncelleme 
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductDTO dto) // ID'ye Göre Ürün Güncelleme 
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var existingProduct = await _productRepository.GetById(id);
+            var existingProduct = await _productRepository.GetByIdAsync(id);
             if (existingProduct == null)
             {
                 return NotFound();
             }
-            product.Id = id;
-            await _productRepository.Update(product);
+
+            _productRepository.UpdateAsync(_mapper.Map<Product>(dto));
             return NoContent();
         }
 
@@ -76,7 +88,7 @@ namespace RESTful_API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var existingProduct = await _productRepository.GetById(id);
+            var existingProduct = await _productRepository.GetByIdAsync(id);
             if (existingProduct == null)
             {
                 return NotFound();
@@ -84,7 +96,7 @@ namespace RESTful_API.Controllers
 
             product.ApplyTo(existingProduct);
 
-            await _productRepository.Update(existingProduct);
+            await _productRepository.UpdateAsync(existingProduct);
             return NoContent();
         }
 
@@ -92,12 +104,12 @@ namespace RESTful_API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id) // ID'ye Göre Ürün Silme 
         {
-            var product = await _productRepository.GetById(id);
+            var product = await _productRepository.GetByIdAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
-            await _productRepository.Delete(product);
+            await _productRepository.DeleteAsync(product);
             return NoContent();
         }
 
@@ -107,7 +119,7 @@ namespace RESTful_API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetProducts([FromQuery] string name, [FromQuery] string sortOrder)
         {
-            var products = await _productRepository.GetAll();
+            var products = await _productRepository.GetAllAsync();
             if (!String.IsNullOrEmpty(name))
             {
                 products = products.Where(p => p.Name.ToUpper().Contains(name.ToUpper()));

@@ -15,25 +15,25 @@ namespace RESTful_API.DAL.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task<T> GetById(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
 
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public async Task<T> Add(T item)
+        public async Task<T> AddAsync(T item)
         {
             _context.Set<T>().Add(item);
             await _context.SaveChangesAsync();
             return item;
         }
 
-        public async Task<T> Update(T item)
+        public async Task<T> UpdateAsync(T item)
         {
             _context.Entry(item).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -41,7 +41,7 @@ namespace RESTful_API.DAL.Repository
         }
 
 
-        public async Task<T> Delete(T item)
+        public async Task<T> DeleteAsync(T item)
         {
             _context.Set<T>().Remove(item);
 

@@ -11,29 +11,29 @@ namespace RESTful_API.BL.Concrate
             _repository = repository;
         }
 
-        public async Task<T> Add(T item)
+        public async Task<T> AddAsync(T item)
         {
-            return await _repository.Add(item);
+            return await _repository.AddAsync(item);
         }
 
-        public async Task<T> Delete(T item)
+        public async Task<T> DeleteAsync(T item)
         {
-            return await _repository.Delete(item);
+            return await _repository.DeleteAsync(item);
         }
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _repository.GetAll();
-        }
-
-        public async Task<T> GetById(int id)
-        {
-            return await _repository.GetById(id);
+            return await _repository.GetAllAsync();
         }
 
-        public async Task<T> Update(T item)
+        public async Task<T> GetByIdAsync(int id)
+        {
+            return await _repository.GetByIdAsync(id);
+        }
+
+        public async Task<T> UpdateAsync(T item)
         {
 
-            return await _repository.Update(item);
+            return await _repository.UpdateAsync(item);
 
         }
     }
