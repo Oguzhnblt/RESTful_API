@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RESTful_API.DAL.Context;
 using RESTful_API.DAL.Repository.Abstract;
-using RESTful_API.DTO.Entities;
 
 namespace RESTful_API.DAL.Repository
 {

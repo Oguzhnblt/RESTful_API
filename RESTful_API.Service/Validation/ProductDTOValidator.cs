@@ -11,6 +11,6 @@ namespace RESTful_API.Service.Validation
             RuleFor(p => p.Price).InclusiveBetween(1, int.MaxValue).WithMessage("{PropertyName} Fiyat 0'dan küçük  olamaz.");
         }
 
-        
+
     }
 }
