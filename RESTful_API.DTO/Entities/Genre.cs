@@ -2,7 +2,7 @@
 {
     public class Genre : BaseEntity
     {
-        public string Name { get; set; }
+        public string GenreName { get; set; }
         public bool IsActive { get; set; }
     }
 }
