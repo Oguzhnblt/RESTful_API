@@ -13,7 +13,7 @@ namespace RESTful_API.Service.Validation
                 .NotEmpty().WithMessage("Şifre gereklidir.")
                 .MinimumLength(8).WithMessage("Şifre en az 8 karakter olmalıdır.")
                 .Matches("[A-Z]").WithMessage("Şifre en az bir büyük harf içermelidir.")
-                .Matches("[0-9]").WithMessage("Şifre en az bir sayı içermelidir.");
+                .Matches("[0-9]").WithMessage("Şifre en az bir sayı içermelidir."); 
 
 
         }
