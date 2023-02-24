@@ -12,7 +12,7 @@ namespace RESTful_API.DAL.Context
             // Kendi SQL Server bağlantınızı appsettings.json üzerinden değiştirebilirsiniz.
         }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Book> Products { get; set; }
 
     }
 }

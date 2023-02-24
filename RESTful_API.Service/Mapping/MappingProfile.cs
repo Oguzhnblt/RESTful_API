@@ -8,7 +8,7 @@ namespace RESTful_API.Service.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Product, ProductDTO>().ReverseMap();
+            CreateMap<Book, BooküDTO>().ReverseMap();
 
             CreateMap<User, UserDTO>().ReverseMap();
 
