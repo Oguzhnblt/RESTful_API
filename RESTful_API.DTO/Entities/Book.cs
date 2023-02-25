@@ -9,6 +9,9 @@
         public DateTime PublishDate { get; set; }
 
 
+
+        public int WriterID { get; set; }
+        public Writer Writer { get; set; } = null!;
         public int GenreID { get; set; }
         public Genre Genres { get; set; } = null!;
 

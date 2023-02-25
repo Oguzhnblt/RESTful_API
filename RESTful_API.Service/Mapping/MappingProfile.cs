@@ -13,6 +13,8 @@ namespace RESTful_API.Service.Mapping
 
             CreateMap<Genre, GenreDTO>().ReverseMap();
 
+            CreateMap<Writer, WriterDTO>().ReverseMap();
+
             CreateMap<User, UserDTO>().ReverseMap();
 
 

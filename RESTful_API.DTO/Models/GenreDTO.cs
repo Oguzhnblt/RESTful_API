@@ -2,7 +2,7 @@
 
 namespace RESTful_API.DTO.Models
 {
-    public class GenreDTO : BaseEntity
+    public class GenreDTO
     {
         public string GenreName { get; set; }
         public bool IsActive { get; set; }

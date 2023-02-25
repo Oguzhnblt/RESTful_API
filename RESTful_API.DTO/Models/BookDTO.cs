@@ -1,8 +1,6 @@
-﻿using RESTful_API.DTO.Entities;
-
-namespace RESTful_API.DTO.Models
+﻿namespace RESTful_API.DTO.Models
 {
-    public class BookDTO : BaseEntity
+    public class BookDTO
     {
         public string BookName { get; set; }
         public string Title { get; set; }
