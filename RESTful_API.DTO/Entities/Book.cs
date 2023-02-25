@@ -7,6 +7,11 @@
         public string Genre { get; set; }
         public int PageCount { get; set; }
         public DateTime PublishDate { get; set; }
+
+
+        public int GenreID { get; set; }
+        public Genre Genres { get; set; } = null!;
+
     }
 
 

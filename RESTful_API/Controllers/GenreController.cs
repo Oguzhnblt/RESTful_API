@@ -23,7 +23,7 @@ namespace RESTful_API.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> GetGenres() // Bütün ürünleri listeleme 
+        public async Task<IActionResult> GetGenres() // Bütün Genreleri listeleme 
         {
             var genres = await _genreRepository.GetAllAsync();
 
@@ -33,7 +33,7 @@ namespace RESTful_API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetGenreById(int id) // ID'ye Göre Ürün Listeleme 
+        public async Task<IActionResult> GetGenreById(int id) // ID'ye Göre Genre Listeleme 
         {
             var genre = await _genreRepository.GetByIdAsync(id);
             var genreDtos = _mapper.Map<GenreDTO>(genre);
@@ -47,9 +47,9 @@ namespace RESTful_API.Controllers
 
 
 
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         [HttpPost]
-        public async Task<IActionResult> AddGenre([FromBody] GenreDTO dto) // Ürün Ekleme 
+        public async Task<IActionResult> AddGenre([FromBody] GenreDTO dto) // Genre Ekleme 
         {
             try
             {
@@ -62,9 +62,9 @@ namespace RESTful_API.Controllers
                 }
 
                 var genre = _mapper.Map<Genre>(dto);
-                await _genreRepository.AddAsync(genre);
+                var gernreResult = await _genreRepository.AddAsync(genre);
 
-                return Ok();
+                return Ok(gernreResult);
             }
             catch (Exception)
             {
@@ -74,7 +74,7 @@ namespace RESTful_API.Controllers
 
         [Authorize(Roles = "Admin,User")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGenre(int id, [FromBody] GenreDTO dto) // ID'ye Göre Ürün Güncelleme 
+        public async Task<IActionResult> UpdateGenre(int id, [FromBody] GenreDTO dto) // ID'ye Göre Genre Güncelleme 
         {
             try
             {
@@ -113,7 +113,7 @@ namespace RESTful_API.Controllers
 
         [Authorize(Roles = "Admin,User")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGenre(int id) // ID'ye Göre Ürün Silme 
+        public async Task<IActionResult> DeleteGenre(int id) // ID'ye Göre Genre Silme 
         {
             try
             {
